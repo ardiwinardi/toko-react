@@ -2,31 +2,33 @@ import { createContext, useEffect, useState } from "react";
 export const CartContext = createContext();
 
 export default function CartContextProvider(props) {
-  const [carts, setCarts] = useState(function () {
-    let carts = localStorage.getItem("carts");
-    return carts ? JSON.parse(carts) : [];
-  });
+  const [carts, setCarts] = useState([]);
 
-  const addToCart = (product) => {
-    if (carts.length === 0) {
-      carts.push({
-        ...product,
-        quantity: 1
-      });
-    } else {
-      const index = carts.findIndex((cart) => cart.id === product.id);
-      // jika ditemukan maka [0 - dst]
-      // jika tidak ditemukan -1
-      if (index >= 0) {
-        carts[index].quantity += 1;
-      } else {
-        carts.push({
-          ...product,
-          quantity: 1
-        });
-      }
-    }
-    setCarts([...carts]);
+  async function getData() {
+    const response = await fetch("http://localhost:3000/carts");
+    const json = await response.json();
+    setCarts(json.data);
+  }
+
+  useEffect(() => {
+    getData();
+  }, []);
+
+  const addToCart = async (product) => {
+    await fetch("http://localhost:3000/carts", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        customer_id: "",
+        order_id: "",
+        product_id: product.id,
+        quantity: 1,
+        status: 0,
+      }),
+    });
+    getData();
   };
 
   const removeCart = (cart) => {
@@ -53,16 +55,14 @@ export default function CartContextProvider(props) {
     setCarts([...carts]);
   };
 
-  useEffect(() => {
-    localStorage.setItem("carts", JSON.stringify(carts));
-  }, [carts]);
+  useEffect(() => {}, [carts]);
 
   return (
     <CartContext.Provider
       value={{
         carts,
         addToCart,
-        removeCart
+        removeCart,
       }}
     >
       {props.children}

@@ -6,14 +6,14 @@ export default function useProducts({ defaultCategory, defaultLimit }) {
 
   const [filter, setFilter] = useState({
     category: defaultCategory,
-    limit: defaultLimit
+    limit: defaultLimit,
   });
 
   const getAllProducts = () => {
     setIsLoading(true);
-    fetch(`https://fakestoreapi.com/products?limit=${filter.limit}`)
+    fetch(`http://localhost:3000/products?offset=0&limit=${filter.limit}`)
       .then((res) => res.json())
-      .then((json) => setProducts(json))
+      .then((json) => setProducts(json.data))
       .then(() => setIsLoading(false));
   };
 
@@ -26,9 +26,9 @@ export default function useProducts({ defaultCategory, defaultLimit }) {
   useEffect(() => {
     if (filter.category) {
       setIsLoading(true);
-      fetch(`https://fakestoreapi.com/products/category/${filter.category}`)
+      fetch(`http://localhost:3000/products?category_id=${filter.category}`)
         .then((res) => res.json())
-        .then((json) => setProducts(json))
+        .then((json) => setProducts(json.data))
         .then(() => setIsLoading(false));
     } else {
       getAllProducts();

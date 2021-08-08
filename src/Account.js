@@ -2,7 +2,7 @@ import { useForm } from "react-hook-form";
 import "react-notifications/lib/notifications.css";
 import {
   NotificationContainer,
-  NotificationManager
+  NotificationManager,
 } from "react-notifications";
 import { useEffect } from "react";
 
@@ -11,7 +11,7 @@ export default function Account() {
     register,
     handleSubmit,
     formState: { errors },
-    reset
+    reset,
   } = useForm();
 
   const onSubmit = (data) => {
@@ -26,7 +26,7 @@ export default function Account() {
       reset({
         name: account.name,
         email: account.email,
-        address: account.address
+        address: account.address,
       });
     }
   }, []);

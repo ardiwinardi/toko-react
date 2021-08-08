@@ -7,9 +7,11 @@ export default function useCategories() {
   // dipanggil saat petama kali render
   useEffect(() => {
     setIsLoading(true);
-    fetch("https://fakestoreapi.com/products/categories")
+    fetch("http://localhost:3000/categories")
       .then((res) => res.json())
-      .then((json) => setCategories(json))
+      .then((json) => {
+        setCategories(json.data);
+      })
       .then(() => setIsLoading(false));
   }, []);
 
