@@ -1,12 +1,20 @@
 import { useForm } from "react-hook-form";
 import "react-notifications/lib/notifications.css";
 import {
-  NotificationContainer,
   NotificationManager,
+  NotificationContainer,
 } from "react-notifications";
 import { useEffect } from "react";
+import { AuthContext } from "contexts/AuthContext";
+import { useContext } from "react";
+import { useHistory } from "react-router-dom";
+import useUpdateProfile from "hooks/useUpdateProfile";
 
 export default function Account() {
+  const history = useHistory();
+  const { me, getMe } = useContext(AuthContext);
+  const [updateProfile, isLoading] = useUpdateProfile();
+
   const {
     register,
     handleSubmit,
@@ -14,26 +22,34 @@ export default function Account() {
     reset,
   } = useForm();
 
-  const onSubmit = (data) => {
-    localStorage.setItem("account", JSON.stringify(data));
-    NotificationManager.success("Account berhasil disimpan", "Sukses");
+  const onSubmit = async (data) => {
+    try {
+      await updateProfile(data);
+      await getMe();
+      NotificationManager.success("Profile berhasil perbaharui", "Sukses");
+    } catch (err) {
+      console.log(err);
+    }
   };
 
   useEffect(() => {
-    let data = localStorage.getItem("account");
-    if (data) {
-      let account = JSON.parse(data);
+    if (me) {
       reset({
-        name: account.name,
-        email: account.email,
-        address: account.address,
+        name: me.name,
+        email: me.email,
+        address: me.address,
+      });
+    } else {
+      history.push({
+        pathname: "/login",
+        state: { message: "Silakan login terlebih dahulu" },
       });
     }
-  }, []);
+  }, [me]);
 
   return (
     <>
-      <h3>Halaman Account</h3>
+      <h3>My Account</h3>
       <div className="row">
         <div className="col-75">
           <div className="container">
@@ -81,12 +97,14 @@ export default function Account() {
                   />
                 </div>
               </div>
-              <input type="submit" value="Simpan" className="btn" />
+              <button type="submit" className="btn">
+                {isLoading ? "Loading..." : "Simpan"}
+              </button>
             </form>
           </div>
         </div>
-        <NotificationContainer />
       </div>
+      <NotificationContainer />
     </>
   );
 }

@@ -1,3 +1,13 @@
+import ListTransactions from "./components/ListTransactions";
+import useTransactions from "./hooks/useTransactions";
+
 export default function Transaction() {
-  return <h3>Halaman Transaksi</h3>;
+  const [transactions, isLoading] = useTransactions();
+
+  return (
+    <>
+      <h3>My Transactions</h3>
+      <ListTransactions transactions={transactions} isLoading={isLoading} />
+    </>
+  );
 }

@@ -1,18 +1,20 @@
 import { useState, useEffect } from "react";
+import categoryService from "services/category";
 
 export default function useCategories() {
   const [categories, setCategories] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
 
+  const getAll = async (filter) => {
+    setIsLoading(true);
+    const data = await categoryService.getAll(filter);
+    setCategories(data);
+    setIsLoading(false);
+  };
+
   // dipanggil saat petama kali render
   useEffect(() => {
-    setIsLoading(true);
-    fetch("http://localhost:3000/categories")
-      .then((res) => res.json())
-      .then((json) => {
-        setCategories(json.data);
-      })
-      .then(() => setIsLoading(false));
+    getAll();
   }, []);
 
   return [categories, isLoading];

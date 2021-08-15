@@ -1,13 +1,21 @@
+import PropTypes from "prop-types";
 import { createContext, useEffect, useState } from "react";
+import { useHistory } from "react-router-dom";
+import cartService from "services/cart";
 export const CartContext = createContext();
+import { confirmAlert } from "react-confirm-alert"; // Import
+import "react-confirm-alert/src/react-confirm-alert.css"; // Import css
 
-export default function CartContextProvider(props) {
+export default function CartContextProvider({ children }) {
+  const history = useHistory();
   const [carts, setCarts] = useState([]);
+  const [isLoading, setIsLoading] = useState(false);
 
   async function getData() {
-    const response = await fetch("http://localhost:3000/carts");
-    const json = await response.json();
-    setCarts(json.data);
+    setIsLoading(true);
+    const data = await cartService.getAll();
+    setCarts(data);
+    setIsLoading(false);
   }
 
   useEffect(() => {
@@ -15,57 +23,86 @@ export default function CartContextProvider(props) {
   }, []);
 
   const addToCart = async (product) => {
-    await fetch("http://localhost:3000/carts", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        customer_id: "",
-        order_id: "",
-        product_id: product.id,
-        quantity: 1,
-        status: 0,
-      }),
-    });
-    getData();
-  };
-
-  const removeCart = (cart) => {
-    const index = carts.findIndex((c) => c.id === cart.id);
-    // jika ditemukan maka [0 - dst]
-    // jika tidak ditemukan -1
-    if (index >= 0) {
-      carts[index].quantity -= 1;
-    }
-
-    if (carts[index].quantity < 1) {
-      let confirm = window.confirm(
-        "Apakah Anda ingin menghapus produk ini dari keranjang?"
-      );
-
-      if (confirm) {
-        // menghapus elemen dari array berdasarkan indexnya
-        carts.splice(index, 1);
-      } else {
-        carts[index].quantity = 1;
+    try {
+      await cartService.add(product);
+      getData();
+    } catch (err) {
+      if (err.response.status === 401) {
+        history.push({
+          pathname: "/login",
+          state: { message: "Silakan login terlebih dahulu" },
+        });
       }
     }
-
-    setCarts([...carts]);
   };
 
-  useEffect(() => {}, [carts]);
+  const removeCart = async (cart) => {
+    if (cart.quantity === 1) {
+      confirmAlert({
+        title: "Delete Cart",
+        message: "Are you sure to do this?",
+        buttons: [
+          {
+            label: "Yes",
+            onClick: async () => {
+              await cartService.remove(cart);
+              getData();
+            },
+          },
+          {
+            label: "No",
+            onClick: () => {},
+          },
+        ],
+      });
+    } else {
+      await cartService.update(
+        {
+          quantity: cart.quantity - 1,
+        },
+        cart.id
+      );
+      getData();
+    }
+  };
+
+  const getTotalAmount = () => {
+    let totalAmount = carts.reduce(
+      (acc, cart) => acc + cart.product.price * cart.quantity,
+      0
+    );
+    return totalAmount.toFixed(2);
+  };
+
+  const getTotalQuantity = () => {
+    return carts.reduce((acc, cart) => acc + cart.quantity, 0);
+  };
+
+  const handleEditQuantity = (operation, cart) => {
+    if (operation === "+") {
+      addToCart(cart.product);
+    } else {
+      removeCart(cart);
+    }
+  };
 
   return (
     <CartContext.Provider
       value={{
         carts,
+        isLoading,
+        getCart: getData,
         addToCart,
-        removeCart,
+        getTotalAmount,
+        getTotalQuantity,
+        handleEditQuantity,
       }}
     >
-      {props.children}
+      {children}
     </CartContext.Provider>
   );
 }
+
+CartContextProvider.propTypes = {
+  children: PropTypes.node,
+};

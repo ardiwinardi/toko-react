@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import productService from "services/product";
 
 export default function useProducts({ defaultCategory, defaultLimit }) {
   const [products, setProducts] = useState([]);
@@ -9,32 +10,17 @@ export default function useProducts({ defaultCategory, defaultLimit }) {
     limit: defaultLimit,
   });
 
-  const getAllProducts = () => {
+  const getAll = async (filter) => {
     setIsLoading(true);
-    fetch(`http://localhost:3000/products?offset=0&limit=${filter.limit}`)
-      .then((res) => res.json())
-      .then((json) => setProducts(json.data))
-      .then(() => setIsLoading(false));
+    const data = await productService.getAll(filter);
+    setProducts(data);
+    setIsLoading(false);
   };
-
-  useEffect(() => {
-    getAllProducts();
-    // eslint-disable-next-line
-  }, []);
 
   // dipanggil saat ada perubahan pada filter
   useEffect(() => {
-    if (filter.category) {
-      setIsLoading(true);
-      fetch(`http://localhost:3000/products?category_id=${filter.category}`)
-        .then((res) => res.json())
-        .then((json) => setProducts(json.data))
-        .then(() => setIsLoading(false));
-    } else {
-      getAllProducts();
-    }
-    // eslint-disable-next-line
+    getAll(filter);
   }, [filter]);
 
-  return [products, filter, setFilter, isLoading];
+  return [products, isLoading, filter, setFilter];
 }

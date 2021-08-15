@@ -1,24 +1,24 @@
-import { useEffect, useState } from "react";
+import useProduct from "hooks/useProduct";
+import PropTypes from "prop-types";
 
-export default function DetailProduct(props) {
-  const [product, setProduct] = useState(null);
-
-  useEffect(() => {
-    fetch(`https://fakestoreapi.com/products/${props.match.params.id}`)
-      .then((res) => res.json())
-      .then((json) => setProduct(json));
-  }, [props.match.params.id]);
+export default function DetailProduct({ match }) {
+  const [product, isLoading] = useProduct(match.params.slug);
 
   return (
     <>
-      <h3>Halaman Detail Product {props.match.params.id}</h3>
-      {product && (
+      <h3>Halaman Detail Product {match.params.slug}</h3>
+      {isLoading && "isLoading..."}
+      {!isLoading && product && (
         <>
           <img src={product.image} width="120px" alt="" />
-          <h4>{product.title}</h4>
+          <h4>{product.name}</h4>
           <h4>${product.price}</h4>
         </>
       )}
     </>
   );
 }
+
+DetailProduct.propTypes = {
+  match: PropTypes.any,
+};
