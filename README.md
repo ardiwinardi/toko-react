@@ -1,2 +1,2 @@
 # toko-react
-Created with CodeSandbox
+contoh Frontend toko dengan reactJS
