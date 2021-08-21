@@ -1,10 +1,12 @@
 import { AuthContext } from 'contexts/AuthContext'
-import { NavLink } from 'react-router-dom'
+import { NavLink, useLocation } from 'react-router-dom'
 import { useContext } from 'react'
 import { confirmAlert } from 'react-confirm-alert'
 import { CartContext } from 'contexts/CartContext'
 
 const Navigation = () => {
+  const location = useLocation()
+  const { pathname } = location
   const { me, signOut } = useContext(AuthContext)
   const { getCart } = useContext(CartContext)
   return (
@@ -13,7 +15,7 @@ const Navigation = () => {
         <div className="navbar navbar-light">
           <div className="container-xl">
             <ul className="navbar-nav">
-              <li className="nav-item">
+              <li className={`nav-item ${pathname === '/' ? 'active' : ''}`}>
                 <NavLink to="/" className="nav-link">
                   <span className="nav-link-icon d-md-none d-lg-inline-block">
                     <svg
@@ -37,7 +39,11 @@ const Navigation = () => {
                   <span className="nav-link-title">Home</span>
                 </NavLink>
               </li>
-              <li className="nav-item">
+              <li
+                className={`nav-item ${
+                  pathname === '/transactions' ? 'active' : ''
+                }`}
+              >
                 <NavLink to="/transactions" className="nav-link">
                   <span className="nav-link-icon d-md-none d-lg-inline-block">
                     <svg
@@ -63,7 +69,9 @@ const Navigation = () => {
                   <span className="nav-link-title">Transactions</span>
                 </NavLink>
               </li>
-              <li className="nav-item">
+              <li
+                className={`nav-item ${pathname === '/carts' ? 'active' : ''}`}
+              >
                 <NavLink to="/carts" className="nav-link">
                   <span className="nav-link-icon d-md-none d-lg-inline-block">
                     <svg
