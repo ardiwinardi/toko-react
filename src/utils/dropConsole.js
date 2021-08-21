@@ -12,7 +12,7 @@ var console = (function (oldCons) {
     oldCons.log(
       '%c%s',
       'color: red; font-size: 12px;',
-      'CAUTION: This space is only for developers. Please do not copy-paste any scripts here. It can be harmful!'
+      'CAUTION: This space is only for developers. Please do not copy-paste any scripts here. It can be harmful!',
     )
     newCons.log = function () {}
     newCons.warn = function () {}
