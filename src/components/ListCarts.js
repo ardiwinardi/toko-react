@@ -1,11 +1,11 @@
-import PropTypes from "prop-types";
-import useCheckout from "hooks/useCheckout";
-import { useContext } from "react";
-import { CartContext } from "../contexts/CartContext";
+import PropTypes from 'prop-types'
+import useCheckout from 'hooks/useCheckout'
+import { useContext } from 'react'
+import { CartContext } from '../contexts/CartContext'
 
-import { confirmAlert } from "react-confirm-alert"; // Import
-import "styles/dialog.css";
-import { AuthContext } from "contexts/AuthContext";
+import { confirmAlert } from 'react-confirm-alert' // Import
+import 'styles/dialog.css'
+import { AuthContext } from 'contexts/AuthContext'
 
 export default function ListCarts() {
   const {
@@ -14,10 +14,10 @@ export default function ListCarts() {
     getTotalAmount,
     getTotalQuantity,
     handleEditQuantity,
-  } = useContext(CartContext);
+  } = useContext(CartContext)
 
-  const [handleCheckout, isLoading] = useCheckout();
-  const { me } = useContext(AuthContext);
+  const [handleCheckout, isLoading] = useCheckout()
+  const { me } = useContext(AuthContext)
 
   const ConfirmDialog = ({ onClose }) => {
     return (
@@ -28,8 +28,8 @@ export default function ListCarts() {
             className="close"
             href="/carts"
             onClick={(e) => {
-              e.preventDefault();
-              onClose();
+              e.preventDefault()
+              onClose()
             }}
           >
             &times;
@@ -44,26 +44,26 @@ export default function ListCarts() {
             type="button"
             className="btn"
             onClick={async () => {
-              await handleCheckout();
-              getCart();
-              onClose();
+              await handleCheckout()
+              getCart()
+              onClose()
             }}
           >
             Lanjutkan
           </button>
         </div>
       </div>
-    );
-  };
+    )
+  }
   ConfirmDialog.propTypes = {
     onClose: PropTypes.any,
-  };
+  }
 
   const onCheckout = () => {
     confirmAlert({
       customUI: ConfirmDialog,
-    });
-  };
+    })
+  }
 
   return (
     <div className="content">
@@ -79,7 +79,7 @@ export default function ListCarts() {
             <th>
               {me && (
                 <button type="button" className="btn" onClick={onCheckout}>
-                  {isLoading ? "Loading" : "Checkout"}
+                  {isLoading ? 'Loading' : 'Checkout'}
                 </button>
               )}
             </th>
@@ -99,14 +99,14 @@ export default function ListCarts() {
                 <button
                   type="button"
                   className="btn btn-icon"
-                  onClick={() => handleEditQuantity("+", cart)}
+                  onClick={() => handleEditQuantity('+', cart)}
                 >
                   +
                 </button>
                 <button
                   type="button"
                   className="btn btn-icon"
-                  onClick={() => handleEditQuantity("-", cart)}
+                  onClick={() => handleEditQuantity('-', cart)}
                 >
                   -
                 </button>
@@ -136,5 +136,5 @@ export default function ListCarts() {
         )}
       </table>
     </div>
-  );
+  )
 }

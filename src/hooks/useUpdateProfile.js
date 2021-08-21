@@ -1,14 +1,14 @@
-import { useState } from "react";
-import userServices from "services/user";
+import { useState } from 'react'
+import userServices from 'services/user'
 
 export default function useUpdateProfile() {
-  const [isLoading, setIsLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState(false)
 
   const updateProfile = async (data) => {
-    setIsLoading(true);
-    await userServices.update(data);
-    setIsLoading(false);
-  };
+    setIsLoading(true)
+    await userServices.update(data)
+    setIsLoading(false)
+  }
 
-  return [updateProfile, isLoading];
+  return [updateProfile, isLoading]
 }

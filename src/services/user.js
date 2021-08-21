@@ -1,11 +1,11 @@
-import api from "utils/api";
+import api from 'utils/api'
 
 const update = async (body) => {
-  await api.put(`users`, body);
-};
+  await api.put(`users`, body)
+}
 
 const userService = {
   update,
-};
+}
 
-export default userService;
+export default userService

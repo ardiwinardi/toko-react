@@ -1,10 +1,10 @@
-import { format } from "date-fns";
-import useTransactions from "hooks/useTransactions";
+import { format } from 'date-fns'
+import useTransactions from 'hooks/useTransactions'
 
 export default function ListTransactions() {
-  const [transactions, isLoading] = useTransactions();
+  const [transactions, isLoading] = useTransactions()
 
-  console.log(transactions);
+  console.log(transactions)
   return (
     <div className="content">
       <table className="styled-table">
@@ -21,7 +21,7 @@ export default function ListTransactions() {
           {isLoading && (
             <tr>
               <td colSpan={3} align="center">
-                Loading Transaction ...{" "}
+                Loading Transaction ...{' '}
               </td>
             </tr>
           )}
@@ -31,7 +31,7 @@ export default function ListTransactions() {
                 <td>
                   {format(
                     new Date(transaction.createdAt),
-                    "dd MMMM yyyy HH:ii"
+                    'dd MMMM yyyy HH:ii'
                   )}
                 </td>
                 <td>
@@ -69,5 +69,5 @@ export default function ListTransactions() {
         </tbody>
       </table>
     </div>
-  );
+  )
 }

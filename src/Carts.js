@@ -1,4 +1,4 @@
-import ListCarts from "./components/ListCarts";
+import ListCarts from './components/ListCarts'
 
 export default function Carts() {
   return (
@@ -6,5 +6,5 @@ export default function Carts() {
       <h3>My Carts</h3>
       <ListCarts />
     </>
-  );
+  )
 }

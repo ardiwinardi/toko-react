@@ -1,13 +1,13 @@
-import useProduct from "hooks/useProduct";
-import PropTypes from "prop-types";
+import useProduct from 'hooks/useProduct'
+import PropTypes from 'prop-types'
 
 export default function DetailProduct({ match }) {
-  const [product, isLoading] = useProduct(match.params.slug);
+  const [product, isLoading] = useProduct(match.params.slug)
 
   return (
     <>
       <h3>Halaman Detail Product {match.params.slug}</h3>
-      {isLoading && "isLoading..."}
+      {isLoading && 'isLoading...'}
       {!isLoading && product && (
         <>
           <img src={product.image} width="120px" alt="" />
@@ -16,9 +16,9 @@ export default function DetailProduct({ match }) {
         </>
       )}
     </>
-  );
+  )
 }
 
 DetailProduct.propTypes = {
   match: PropTypes.any,
-};
+}

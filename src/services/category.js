@@ -1,18 +1,18 @@
-import api from "utils/api";
+import api from 'utils/api'
 
 const getAll = async () => {
   try {
-    const res = await api.get(`categories`);
-    return res.data.data;
+    const res = await api.get(`categories`)
+    return res.data.data
   } catch (err) {
-    console.log(err);
+    console.log(err)
   }
 
-  return [];
-};
+  return []
+}
 
 const categoryService = {
   getAll,
-};
+}
 
-export default categoryService;
+export default categoryService

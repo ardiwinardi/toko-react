@@ -1,28 +1,28 @@
-import { CartContext } from "contexts/CartContext";
-import useProducts from "hooks/useProducts";
-import { Link } from "react-router-dom";
-import { useContext } from "react";
-import useCategories from "hooks/useCategories";
+import { CartContext } from 'contexts/CartContext'
+import useProducts from 'hooks/useProducts'
+import { Link } from 'react-router-dom'
+import { useContext } from 'react'
+import useCategories from 'hooks/useCategories'
 
-import "styles/product.css";
+import 'styles/product.css'
 
 export default function ListProducts() {
   const [products, isLoading, filter, setFilter] = useProducts({
-    defautCategory: "",
+    defautCategory: '',
     defaultLimit: 6,
-  });
-  const { addToCart } = useContext(CartContext);
-  const [categories, isLoadingCategories] = useCategories();
+  })
+  const { addToCart } = useContext(CartContext)
+  const [categories, isLoadingCategories] = useCategories()
 
   return (
     <>
       <div
         style={{
-          padding: "0px 20px",
+          padding: '0px 20px',
         }}
       >
         <label>
-          Kategori : {isLoadingCategories && "Loading Categories ..."}
+          Kategori : {isLoadingCategories && 'Loading Categories ...'}
           {!isLoadingCategories && (
             <select
               onChange={(e) =>
@@ -40,10 +40,10 @@ export default function ListProducts() {
               ))}
             </select>
           )}
-        </label>{" "}
+        </label>{' '}
         {!filter.category && (
           <label>
-            Tampilkan :{" "}
+            Tampilkan :{' '}
             <select
               onChange={(e) =>
                 setFilter((filter) => ({
@@ -62,7 +62,7 @@ export default function ListProducts() {
       </div>
 
       <div className="row product-container">
-        {isLoading && "Loading products... "}
+        {isLoading && 'Loading products... '}
         {!isLoading &&
           products.map((product) => (
             <div className="col-30" key={product.id}>
@@ -88,5 +88,5 @@ export default function ListProducts() {
           ))}
       </div>
     </>
-  );
+  )
 }

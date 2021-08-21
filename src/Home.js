@@ -1,4 +1,4 @@
-import ListProducts from "./components/ListProducts";
+import ListProducts from './components/ListProducts'
 
 export default function Home() {
   return (
@@ -6,5 +6,5 @@ export default function Home() {
       <h3>Products</h3>
       <ListProducts />
     </>
-  );
+  )
 }

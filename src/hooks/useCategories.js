@@ -1,21 +1,21 @@
-import { useState, useEffect } from "react";
-import categoryService from "services/category";
+import { useState, useEffect } from 'react'
+import categoryService from 'services/category'
 
 export default function useCategories() {
-  const [categories, setCategories] = useState([]);
-  const [isLoading, setIsLoading] = useState(false);
+  const [categories, setCategories] = useState([])
+  const [isLoading, setIsLoading] = useState(false)
 
   const getAll = async (filter) => {
-    setIsLoading(true);
-    const data = await categoryService.getAll(filter);
-    setCategories(data);
-    setIsLoading(false);
-  };
+    setIsLoading(true)
+    const data = await categoryService.getAll(filter)
+    setCategories(data)
+    setIsLoading(false)
+  }
 
   // dipanggil saat petama kali render
   useEffect(() => {
-    getAll();
-  }, []);
+    getAll()
+  }, [])
 
-  return [categories, isLoading];
+  return [categories, isLoading]
 }
