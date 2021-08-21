@@ -1,14 +1,8 @@
 import api from 'utils/api'
 
 const getAll = async () => {
-  try {
-    const res = await api.get(`carts`)
-    return res.data.data
-  } catch (err) {
-    console.log(err)
-  }
-
-  return []
+  const response = await api.get(`carts`).catch((err) => console.log(err))
+  return response ? response.data.data : []
 }
 
 const add = async (product) => {
@@ -16,19 +10,11 @@ const add = async (product) => {
 }
 
 const remove = async (cart) => {
-  try {
-    await api.delete(`carts/${cart.id}`)
-  } catch (err) {
-    console.log(err)
-  }
+  await api.delete(`carts/${cart.id}`).catch((err) => console.log(err))
 }
 
 const update = async (body, id) => {
-  try {
-    await api.put(`carts/${id}`, body)
-  } catch (err) {
-    console.log(err)
-  }
+  await api.put(`carts/${id}`, body).catch((err) => console.log(err))
 }
 
 const cartService = {

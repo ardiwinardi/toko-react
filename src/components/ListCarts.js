@@ -66,8 +66,8 @@ export default function ListCarts() {
   }
 
   return (
-    <div className="content">
-      <table className="styled-table">
+    <div className="table-responsive">
+      <table className="table table-vcenter card-table">
         <thead>
           <tr>
             <th width="30%" colSpan="2">
@@ -78,7 +78,11 @@ export default function ListCarts() {
             <th width="20%">Total</th>
             <th>
               {me && (
-                <button type="button" className="btn" onClick={onCheckout}>
+                <button
+                  type="button"
+                  className="btn btn-success"
+                  onClick={onCheckout}
+                >
                   {isLoading ? 'Loading' : 'Checkout'}
                 </button>
               )}
@@ -89,27 +93,29 @@ export default function ListCarts() {
           {carts.map((cart, index) => (
             <tr key={index}>
               <td>
-                <img src={cart.product?.image} width="30px" alt="" />
+                <img src={cart.product?.image} width="50px" alt="" />
               </td>
               <td>{cart.product?.name}</td>
               <td>{cart.product?.price}</td>
               <td>{cart.quantity}</td>
               <td>{cart.product?.price * cart.quantity}</td>
               <td>
-                <button
-                  type="button"
-                  className="btn btn-icon"
-                  onClick={() => handleEditQuantity('+', cart)}
-                >
-                  +
-                </button>
-                <button
-                  type="button"
-                  className="btn btn-icon"
-                  onClick={() => handleEditQuantity('-', cart)}
-                >
-                  -
-                </button>
+                <div className="btn-list">
+                  <button
+                    type="button"
+                    className="btn btn-icon"
+                    onClick={() => handleEditQuantity('+', cart)}
+                  >
+                    +
+                  </button>
+                  <button
+                    type="button"
+                    className="btn btn-icon"
+                    onClick={() => handleEditQuantity('-', cart)}
+                  >
+                    -
+                  </button>
+                </div>
               </td>
             </tr>
           ))}
@@ -130,7 +136,7 @@ export default function ListCarts() {
                 <strong>Total</strong>
               </td>
               <td>{getTotalQuantity()}</td>
-              <td>{getTotalAmount()}</td>
+              <td colSpan={3}>{getTotalAmount()}</td>
             </tr>
           </tfoot>
         )}

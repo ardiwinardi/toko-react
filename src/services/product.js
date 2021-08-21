@@ -1,34 +1,27 @@
 import api from 'utils/api'
 
 const getAll = async ({ offset = 0, limit = 10, category = '' }) => {
-  try {
-    const queries = []
+  const queries = []
 
-    if (limit) {
-      queries.push(`offset=${offset}&limit=${limit}`)
-    }
-    if (category) {
-      queries.push(`category_id=${category}`)
-    }
-
-    const res = await api.get(`products?${queries.join('&')}`)
-    return res.data.data
-  } catch (err) {
-    console.log(err)
+  if (limit) {
+    queries.push(`offset=${offset}&limit=${limit}`)
+  }
+  if (category) {
+    queries.push(`category_id=${category}`)
   }
 
-  return []
+  const response = await api
+    .get(`products?${queries.join('&')}`)
+    .catch((err) => console.log(err))
+  return response ? response.data.data : []
 }
 
 const getBySlug = async (slug) => {
-  try {
-    const res = await api.get(`products/${slug}`)
-    return res.data.data
-  } catch (err) {
-    console.log(err)
-  }
+  const response = await api
+    .get(`products/${slug}`)
+    .catch((err) => console.log(err))
 
-  return null
+  return response ? response.data.data : null
 }
 
 const productService = {

@@ -1,13 +1,13 @@
 import { useState, useEffect } from 'react'
 import productService from 'services/product'
 
-export default function useProducts({ defaultCategory, defaultLimit }) {
+export default function useProducts() {
   const [products, setProducts] = useState([])
   const [isLoading, setIsLoading] = useState(false)
 
   const [filter, setFilter] = useState({
-    category: defaultCategory,
-    limit: defaultLimit,
+    category: '',
+    limit: '8',
   })
 
   const getAll = async (filter) => {
@@ -22,5 +22,5 @@ export default function useProducts({ defaultCategory, defaultLimit }) {
     getAll(filter)
   }, [filter])
 
-  return [products, isLoading, filter, setFilter]
+  return { products, isLoading, filter, setFilter }
 }

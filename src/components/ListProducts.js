@@ -1,92 +1,56 @@
 import { CartContext } from 'contexts/CartContext'
-import useProducts from 'hooks/useProducts'
 import { Link } from 'react-router-dom'
 import { useContext } from 'react'
-import useCategories from 'hooks/useCategories'
+import PropTypes from 'prop-types'
 
-import 'styles/product.css'
-
-export default function ListProducts() {
-  const [products, isLoading, filter, setFilter] = useProducts({
-    defautCategory: '',
-    defaultLimit: 6,
-  })
+function ListProducts({ products, isLoading }) {
   const { addToCart } = useContext(CartContext)
-  const [categories, isLoadingCategories] = useCategories()
 
   return (
     <>
-      <div
-        style={{
-          padding: '0px 20px',
-        }}
-      >
-        <label>
-          Kategori : {isLoadingCategories && 'Loading Categories ...'}
-          {!isLoadingCategories && (
-            <select
-              onChange={(e) =>
-                setFilter((filter) => ({
-                  ...filter,
-                  category: e.target.value,
-                }))
-              }
-            >
-              <option value="">Semua Kategori</option>
-              {categories.map((category) => (
-                <option value={category.id} key={category.id}>
-                  {category.name}
-                </option>
-              ))}
-            </select>
-          )}
-        </label>{' '}
-        {!filter.category && (
-          <label>
-            Tampilkan :{' '}
-            <select
-              onChange={(e) =>
-                setFilter((filter) => ({
-                  ...filter,
-                  limit: e.target.value,
-                }))
-              }
-              defaultValue={filter.limit}
-            >
-              <option value="2">2 Produk</option>
-              <option value="5">5 Produk</option>
-              <option value="10">10 Produk</option>
-            </select>
-          </label>
-        )}
-      </div>
-
-      <div className="row product-container">
-        {isLoading && 'Loading products... '}
-        {!isLoading &&
-          products.map((product) => (
-            <div className="col-30" key={product.id}>
-              <div className="product-card">
-                <div className="product-image">
-                  <img src={product.image} />
-                </div>
-                <div className="product-details">
-                  <h1>
-                    <Link to={`/product/${product.slug}`}>{product.name}</Link>
-                  </h1>
-                  <p>Rp. {product.price}</p>
-                  <button
-                    type="button"
-                    className="btn"
-                    onClick={() => addToCart(product)}
-                  >
-                    Add to Cart
-                  </button>
+      <div className="container-xl">
+        <div className="row row-cards">
+          {isLoading && 'Loading products... '}
+          {!isLoading &&
+            products.map((product) => (
+              <div className="col-6 col-lg-3" key={product.id}>
+                <div className="card card-sm">
+                  <Link to={`/product/${product.slug}`} className="d-block">
+                    <img src={product.image} className="card-img-top" />
+                  </Link>
+                  <div className="card-body">
+                    <div className="d-flex align-items-center">
+                      <div>
+                        <div>{product.name}</div>
+                        <div className="text-muted">Rp. {product.price}</div>
+                      </div>
+                      <div className="ms-auto">
+                        <span className="badge">{product.category?.name}</span>
+                      </div>
+                    </div>
+                  </div>
+                  <div className="card-footer">
+                    <div className="d-flex">
+                      <button
+                        type="button"
+                        className="btn btn-primary ms-auto"
+                        onClick={() => addToCart(product)}
+                      >
+                        Add to Cart
+                      </button>
+                    </div>
+                  </div>
                 </div>
               </div>
-            </div>
-          ))}
+            ))}
+        </div>
       </div>
     </>
   )
 }
+
+ListProducts.propTypes = {
+  products: PropTypes.array,
+  isLoading: PropTypes.bool,
+}
+export default ListProducts

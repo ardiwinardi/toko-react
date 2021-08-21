@@ -1,14 +1,8 @@
 import api from 'utils/api'
 
 const getAll = async () => {
-  try {
-    const res = await api.get(`categories`)
-    return res.data.data
-  } catch (err) {
-    console.log(err)
-  }
-
-  return []
+  const response = await api.get(`categories`).catch((err) => console.log(err))
+  return response ? response.data.data : []
 }
 
 const categoryService = {

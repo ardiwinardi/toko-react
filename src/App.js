@@ -1,9 +1,9 @@
 import React, { Suspense } from 'react'
-import TopNavigation from './components/TopNavigation'
-import 'styles/styles.css'
+import 'styles/tabler.css'
 import { BrowserRouter as Router, Route } from 'react-router-dom'
 import AuthContextProvider from 'contexts/AuthContext'
 import CartContextProvider from 'contexts/CartContext'
+import Layout from 'components/Layout'
 
 const Home = React.lazy(() => import('./Home'))
 const Transaction = React.lazy(() => import('./Transaction'))
@@ -17,9 +17,12 @@ export default function App() {
     <Router>
       <AuthContextProvider>
         <CartContextProvider>
-          <TopNavigation />
-          <div className="App">
-            <Suspense fallback={<>Loading...</>}>
+          <Layout>
+            <Suspense
+              fallback={
+                <div className="spinner-border m-auto mt-5" role="status"></div>
+              }
+            >
               <Route exact path="/" component={Home} />
               <Route exact path="/product/:slug" component={DetailProduct} />
               <Route exact path="/transactions" component={Transaction} />
@@ -27,7 +30,7 @@ export default function App() {
               <Route exact path="/carts" component={Carts} />
               <Route exact path="/login" component={Login} />
             </Suspense>
-          </div>
+          </Layout>
         </CartContextProvider>
       </AuthContextProvider>
     </Router>

@@ -4,10 +4,9 @@ import useTransactions from 'hooks/useTransactions'
 export default function ListTransactions() {
   const [transactions, isLoading] = useTransactions()
 
-  console.log(transactions)
   return (
-    <div className="content">
-      <table className="styled-table">
+    <div className="table-responsive">
+      <table className="table table-vcenter card-table table-striped">
         <thead>
           <tr>
             <th width="300px">Date Transaction</th>
@@ -31,7 +30,7 @@ export default function ListTransactions() {
                 <td>
                   {format(
                     new Date(transaction.createdAt),
-                    'dd MMMM yyyy HH:ii'
+                    'dd MMMM yyyy HH:ii',
                   )}
                 </td>
                 <td>
@@ -46,13 +45,13 @@ export default function ListTransactions() {
                 <td>
                   {transaction.carts.reduce(
                     (acc, cart) => acc + cart.quantity,
-                    0
+                    0,
                   )}
                 </td>
                 <td>
                   {transaction.carts.reduce(
                     (acc, cart) => acc + cart.quantity * cart.product.price,
-                    0
+                    0,
                   )}
                 </td>
                 <td>{transaction.status}</td>

@@ -26,6 +26,9 @@ export default function CartContextProvider({ children }) {
     try {
       await cartService.add(product)
       getData()
+      document.querySelector('body').scrollIntoView({
+        behavior: 'smooth',
+      })
     } catch (err) {
       if (err.response.status === 401) {
         history.push({
@@ -60,7 +63,7 @@ export default function CartContextProvider({ children }) {
         {
           quantity: cart.quantity - 1,
         },
-        cart.id
+        cart.id,
       )
       getData()
     }
@@ -69,7 +72,7 @@ export default function CartContextProvider({ children }) {
   const getTotalAmount = () => {
     let totalAmount = carts.reduce(
       (acc, cart) => acc + cart.product.price * cart.quantity,
-      0
+      0,
     )
     return totalAmount.toFixed(2)
   }
