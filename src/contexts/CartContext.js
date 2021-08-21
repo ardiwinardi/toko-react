@@ -74,7 +74,7 @@ export default function CartContextProvider({ children }) {
       (acc, cart) => acc + cart.product.price * cart.quantity,
       0,
     )
-    return totalAmount.toFixed(2)
+    return totalAmount.toFixed(0)
   }
 
   const getTotalQuantity = () => {
