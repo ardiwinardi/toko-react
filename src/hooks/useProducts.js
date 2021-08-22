@@ -17,7 +17,6 @@ export default function useProducts() {
     setIsLoading(false)
   }
 
-  // dipanggil saat ada perubahan pada filter
   useEffect(() => {
     getAll(filter)
   }, [filter])

@@ -57,5 +57,5 @@ export default function AuthContextProvider({ children }) {
 }
 
 AuthContextProvider.propTypes = {
-  children: PropTypes.node,
+  children: PropTypes.element.isRequired,
 }

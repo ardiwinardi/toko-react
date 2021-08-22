@@ -12,7 +12,6 @@ export default function useCategories() {
     setIsLoading(false)
   }
 
-  // dipanggil saat petama kali render
   useEffect(() => {
     getAll()
   }, [])

@@ -1,5 +1,4 @@
 import { useForm } from 'react-hook-form'
-import PropTypes from 'prop-types'
 import { AuthContext } from 'contexts/AuthContext'
 import { useContext } from 'react'
 
@@ -72,9 +71,4 @@ export default function Login() {
       </div>
     </>
   )
-}
-
-Login.propTypes = {
-  history: PropTypes.any,
-  location: PropTypes.any,
 }

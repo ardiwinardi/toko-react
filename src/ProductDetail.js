@@ -4,7 +4,7 @@ import PropTypes from 'prop-types'
 import { useContext } from 'react'
 import { Link } from 'react-router-dom'
 
-export default function DetailProduct({ match }) {
+export default function ProductDetail({ match }) {
   const [product, isLoading] = useProduct(match.params.slug)
   const { addToCart } = useContext(CartContext)
 
@@ -77,6 +77,6 @@ export default function DetailProduct({ match }) {
   )
 }
 
-DetailProduct.propTypes = {
-  match: PropTypes.any,
+ProductDetail.propTypes = {
+  match: PropTypes.object,
 }

@@ -50,7 +50,7 @@ function ListProducts({ products, isLoading }) {
 }
 
 ListProducts.propTypes = {
-  products: PropTypes.array,
-  isLoading: PropTypes.bool,
+  products: PropTypes.array.isRequired,
+  isLoading: PropTypes.bool.isRequired,
 }
 export default ListProducts

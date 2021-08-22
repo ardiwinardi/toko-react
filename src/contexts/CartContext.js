@@ -2,9 +2,10 @@ import PropTypes from 'prop-types'
 import { createContext, useEffect, useState } from 'react'
 import { useHistory } from 'react-router-dom'
 import cartService from 'services/cart'
+import { confirmAlert } from 'react-confirm-alert'
+import 'react-confirm-alert/src/react-confirm-alert.css'
+import { formatNumber } from 'utils/number'
 export const CartContext = createContext()
-import { confirmAlert } from 'react-confirm-alert' // Import
-import 'react-confirm-alert/src/react-confirm-alert.css' // Import css
 
 export default function CartContextProvider({ children }) {
   const history = useHistory()
@@ -74,7 +75,7 @@ export default function CartContextProvider({ children }) {
       (acc, cart) => acc + cart.product.price * cart.quantity,
       0,
     )
-    return totalAmount.toFixed(0)
+    return formatNumber(totalAmount)
   }
 
   const getTotalQuantity = () => {
@@ -107,5 +108,5 @@ export default function CartContextProvider({ children }) {
 }
 
 CartContextProvider.propTypes = {
-  children: PropTypes.node,
+  children: PropTypes.element.isRequired,
 }

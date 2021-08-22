@@ -28,9 +28,10 @@ const Header = () => {
                 width="110"
                 height="32"
                 alt="Tabler"
-                className="navbar-brand-image"
+                className="navbar-brand-image px-2"
               />
             </Link>
+            Toko React
           </h1>
           <div className="navbar-nav flex-row order-md-last">
             {me && (

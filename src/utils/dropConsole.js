@@ -7,7 +7,7 @@ var console = (function (oldCons) {
   // let drop = "true" === process.env.REACT_APP_DROP_CONSOLE ? true : false;
   let drop = false
   let newCons = { ...oldCons }
-  window.consol = oldCons // A quick handle to enable all console logs again. In browser > developer tools > console tab: {window.console = window.consol}
+  window.console = oldCons // A quick handle to enable all console logs again. In browser > developer tools > console tab: {window.console = window.consol}
   if (drop) {
     oldCons.log(
       '%c%s',

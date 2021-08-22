@@ -1,11 +1,10 @@
-import PropTypes from 'prop-types'
 import useCheckout from 'hooks/useCheckout'
 import { useContext } from 'react'
 import { CartContext } from '../contexts/CartContext'
-
-import { confirmAlert } from 'react-confirm-alert' // Import
-import 'styles/dialog.css'
 import { AuthContext } from 'contexts/AuthContext'
+import { formatNumber } from 'utils/number'
+import { confirmAlert } from 'react-confirm-alert'
+import CustomUI from './confirm-alert/CustomUI'
 
 export default function ListCarts() {
   const {
@@ -19,49 +18,28 @@ export default function ListCarts() {
   const [handleCheckout, isLoading] = useCheckout()
   const { me } = useContext(AuthContext)
 
-  const ConfirmDialog = ({ onClose }) => {
-    return (
-      <div id="popup1" className="overlay">
-        <div className="popup">
-          <h2>Konfirmasi</h2>
-          <a
-            className="close"
-            href="/carts"
-            onClick={(e) => {
-              e.preventDefault()
-              onClose()
-            }}
-          >
-            &times;
-          </a>
-          <div className="content">
-            <strong>Pastikan alamat pengiriman sudah sesuai?</strong>
-            <div>{me.name}</div>
-            <div>{me.email}</div>
-            <div>{me.address}</div>
-          </div>
-          <button
-            type="button"
-            className="btn"
-            onClick={async () => {
-              await handleCheckout()
-              getCart()
-              onClose()
-            }}
-          >
-            Lanjutkan
-          </button>
-        </div>
-      </div>
-    )
-  }
-  ConfirmDialog.propTypes = {
-    onClose: PropTypes.any,
-  }
-
   const onCheckout = () => {
     confirmAlert({
-      customUI: ConfirmDialog,
+      title: 'Konfirmasi',
+      message: (
+        <>
+          <strong>Pastikan alamat pengiriman sudah sesuai?</strong>
+          <div>{me.name}</div>
+          <div>{me.email}</div>
+          <div>{me.address}</div>
+        </>
+      ),
+      buttons: [
+        {
+          label: 'Lanjutkan',
+          className: 'btn btn-success',
+          onClick: async () => {
+            await handleCheckout()
+            getCart()
+          },
+        },
+      ],
+      customUI: CustomUI,
     })
   }
 
@@ -71,7 +49,7 @@ export default function ListCarts() {
         <thead>
           <tr>
             <th width="30%" colSpan="2">
-              Title
+              Product
             </th>
             <th width="20%">Price</th>
             <th width="20%">Quantity</th>
@@ -90,15 +68,15 @@ export default function ListCarts() {
           </tr>
         </thead>
         <tbody>
-          {carts.map((cart, index) => (
-            <tr key={index}>
+          {carts.map((cart) => (
+            <tr key={cart.id}>
               <td>
                 <img src={cart.product?.image} width="50px" alt="" />
               </td>
               <td>{cart.product?.name}</td>
-              <td>{cart.product?.price}</td>
-              <td>{cart.quantity}</td>
-              <td>{cart.product?.price * cart.quantity}</td>
+              <td>{formatNumber(cart.product?.price)}</td>
+              <td>{formatNumber(cart.quantity)}</td>
+              <td>{formatNumber(cart.product?.price * cart.quantity)}</td>
               <td>
                 <div className="btn-list">
                   <button

@@ -12,7 +12,6 @@ export default function useProduct(slug) {
     setIsLoading(false)
   }
 
-  // dipanggil saat ada perubahan pada filter
   useEffect(() => {
     getBySlug(slug)
   }, [slug])

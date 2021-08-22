@@ -1,5 +1,6 @@
 import { format } from 'date-fns'
 import useTransactions from 'hooks/useTransactions'
+import { formatNumber } from 'utils/number'
 
 export default function ListTransactions() {
   const [transactions, isLoading] = useTransactions()
@@ -25,8 +26,8 @@ export default function ListTransactions() {
             </tr>
           )}
           {!isLoading &&
-            transactions.map((transaction, index) => (
-              <tr key={index}>
+            transactions.map((transaction) => (
+              <tr key={transaction.id}>
                 <td>
                   {format(
                     new Date(transaction.createdAt),
@@ -35,23 +36,25 @@ export default function ListTransactions() {
                 </td>
                 <td>
                   <ul>
-                    {transaction.carts.map((cart, index) => (
-                      <li key={index}>
-                        {cart.product.name} ({cart.quantity} items)
-                      </li>
+                    {transaction.carts.map((cart) => (
+                      <li key={cart.id}>{cart.product.name}</li>
                     ))}
                   </ul>
                 </td>
                 <td>
-                  {transaction.carts.reduce(
-                    (acc, cart) => acc + cart.quantity,
-                    0,
+                  {formatNumber(
+                    transaction.carts.reduce(
+                      (acc, cart) => acc + cart.quantity,
+                      0,
+                    ),
                   )}
                 </td>
                 <td>
-                  {transaction.carts.reduce(
-                    (acc, cart) => acc + cart.quantity * cart.product.price,
-                    0,
+                  {formatNumber(
+                    transaction.carts.reduce(
+                      (acc, cart) => acc + cart.quantity * cart.product.price,
+                      0,
+                    ),
                   )}
                 </td>
                 <td>{transaction.status}</td>

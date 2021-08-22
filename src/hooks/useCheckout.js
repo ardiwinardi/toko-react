@@ -12,8 +12,6 @@ export default function useCheckout() {
       setIsLoading(true)
       await orderService.add()
       NotificationManager.success('Checkout berhasil', 'Sukses')
-      setIsLoading(false)
-
       history.push('/transactions')
     } catch (err) {
       if (err.response.status === 401) {
@@ -23,6 +21,8 @@ export default function useCheckout() {
         })
       }
     }
+
+    setIsLoading(false)
   }
 
   return [handleCheckout, isLoading]
