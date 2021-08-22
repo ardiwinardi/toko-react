@@ -10,6 +10,6 @@ Contoh FrontEnd dengan menggunakan reactJS
 
 2. Jalankan server dengan perintah berikut : 
 
-    **npm run dev**
+    **npm run start**
     
 3. Selamat mencoba
